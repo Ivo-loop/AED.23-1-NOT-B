@@ -1,6 +1,6 @@
 package lineares;
 
-public class ListaEstatica {
+public class ListaEstatica implements Lista {
 	private int[] info;
 	private int tamanho;
 
@@ -9,6 +9,7 @@ public class ListaEstatica {
 		tamanho = 0;
 	}
 
+	@Override
 	public void inserir(int valor) {
 		if (tamanho == info.length) {
 			this.redimensionar();
@@ -25,6 +26,7 @@ public class ListaEstatica {
 		this.info = novo;
 	}
 
+	@Override
 	public int buscar(int valor) {
 		for (int i = 0; i < tamanho; i++) {
 			if (valor == info[i]) {
@@ -34,10 +36,12 @@ public class ListaEstatica {
 		return -1;
 	}
 
+	@Override
 	public boolean estaVazia() {
 		return (tamanho == 0);
 	}
 
+	@Override
 	public void retirar(int valor) {
 		int pos = this.buscar(valor);
 		if (pos != -1) { // encontrou o valor
@@ -48,6 +52,7 @@ public class ListaEstatica {
 		}
 	}
 
+	@Override
 	public String exibir() {
 		String str = "[";
 		for (int i = 0; i < tamanho; i++) {
@@ -56,8 +61,9 @@ public class ListaEstatica {
 		return str + "]";
 	}
 
-	public ListaEstatica copiar() { // contribuição Maria Clara
-		ListaEstatica outra = new ListaEstatica();
+	@Override
+	public Lista copiar() { // contribuição Maria Clara
+		Lista outra = new ListaEstatica();
 		for (int i = 0; i < this.tamanho; i++) {
 			outra.inserir(this.info[i]);
 		}
@@ -65,9 +71,10 @@ public class ListaEstatica {
 		return outra;
 	}
 
-	public ListaEstatica dividir() {
+	@Override
+	public Lista dividir() {
 		int metade = this.tamanho / 2;
-		ListaEstatica outra = new ListaEstatica();
+		Lista outra = new ListaEstatica();
 		for (int i = metade; i < this.tamanho; i++) {
 			outra.inserir(this.info[i]);
 		}
@@ -75,21 +82,43 @@ public class ListaEstatica {
 		return outra;
 	}
 
+	@Override
 	public int getTamanho() {
 		return this.tamanho;
 	}
 
-	public void concatenar(ListaEstatica outraLista) {
+	@Override
+	public void concatenar(Lista outraLista) {
 		for (int i = 0; i < outraLista.getTamanho(); i++) {
 			this.inserir(outraLista.pegar(i));
 		}
 	}
 
+	@Override
 	public int pegar(int pos) {
-		if (pos >= this.tamanho) {
-			throw new IndexOutOfBoundsException("Pos="+pos+". Length="+tamanho);
+		if (pos < 0 || pos >= this.tamanho) {
+			throw new IndexOutOfBoundsException("Pos=" + pos + ". Length=" + tamanho);
 		}
 		return this.info[pos];
+	}
+
+	@Override
+	public void inserir(int valor, int pos) {
+		if (pos < 0 || pos > tamanho) {
+			throw new IndexOutOfBoundsException("Pos=" + pos + ". Length=" + tamanho);
+		}
+		if (pos == tamanho) {
+			this.inserir(valor);
+		} else {
+			if (tamanho == info.length) {
+				this.redimensionar();
+			}
+			for (int i = tamanho; i > pos; i--) {
+				info[i] = info[i - 1];
+			}
+			info[pos] = valor;
+			tamanho++;
+		}
 	}
 
 }
