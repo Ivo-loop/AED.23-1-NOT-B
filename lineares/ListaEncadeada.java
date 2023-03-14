@@ -1,19 +1,18 @@
 package lineares;
 
-public class ListaEncadeada implements Lista {
+public class ListaEncadeada<T> implements Lista<T> {
 
-	private NoLista primeiro;
-	private NoLista ultimo;
+	private NoLista<T> primeiro;
+	private NoLista<T> ultimo;
 	private int qtdElementos;
-	
+
 	@Override
-	public void inserir(int valor) {
-		NoLista novo = new NoLista();
+	public void inserir(T valor) {
+		NoLista<T> novo = new NoLista<>();
 		novo.setInfo(valor);
 		if (this.estaVazia()) {
 			primeiro = novo;
-		}
-		else {
+		} else {
 			ultimo.setProximo(novo);
 		}
 		ultimo = novo;
@@ -21,63 +20,118 @@ public class ListaEncadeada implements Lista {
 	}
 
 	@Override
-	public void inserir(int valor, int pos) {
+	public void inserir(T valor, int pos) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public int buscar(int valor) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int buscar(T valor) { // contribuição da Maria Julia
+		NoLista<T> p = primeiro;
+		int cont = 0;
+		while (p != null) {
+			if (p.getInfo().equals(valor)) {
+				return cont;
+			}
+			p = p.getProximo();
+			cont++;
+		}
+		return -1;
 	}
 
 	@Override
 	public boolean estaVazia() {
-		// TODO Auto-generated method stub
-		return false;
+		return (primeiro == null);
 	}
 
 	@Override
-	public void retirar(int valor) {
-		// TODO Auto-generated method stub
+	public void retirar(T valor) { // contribuição do Carlos
+		NoLista<T> before = null;
+		NoLista<T> current = this.primeiro;
+		while (current != null && !current.getInfo().equals(valor)) {
+			before = current;
+			current = current.getProximo();
+		}
 
+		if (current != null) {
+			if (before == null) {
+				this.primeiro = this.primeiro.getProximo();
+			} else {
+				before.setProximo(current.getProximo());
+			}
+			if (this.ultimo == current) {
+				this.ultimo = before;
+			}
+			this.qtdElementos--;
+		}
 	}
 
 	@Override
-	public String exibir() {
-		// TODO Auto-generated method stub
-		return null;
+	public String exibir() { // contribuição do Jonathan
+		NoLista<T> p = primeiro;
+		String str = "[";
+		while (p != null) {
+			str += p.getInfo() + ", ";
+			p = p.getProximo();
+		}
+		return str + "]";
 	}
 
 	@Override
-	public Lista copiar() {
-		// TODO Auto-generated method stub
-		return null;
+	public Lista<T> copiar() { // contribuição do Rodrigo
+		ListaEncadeada<T> novaLista = new ListaEncadeada<>();
+		for (NoLista<T> no = this.primeiro; no != null; no = no.getProximo()) {
+			novaLista.inserir(no.getInfo());
+		}
+		return novaLista;
 	}
 
 	@Override
-	public Lista dividir() {
-		// TODO Auto-generated method stub
-		return null;
+	public Lista<T> dividir() { // contribuição do Jonathan
+		ListaEncadeada<T> downNova = new ListaEncadeada<>();
+		NoLista<T> atual = this.primeiro;
+		NoLista<T> anterior = null;
+		for (int i = 0; i < this.getTamanho() / 2; i++) {
+			anterior = atual;
+			atual = atual.getProximo();
+		}
+		downNova.primeiro = atual;
+		downNova.ultimo = this.ultimo;
+		this.ultimo = anterior;
+		anterior.setProximo(null);
+		downNova.qtdElementos = this.getTamanho() - (this.getTamanho() / 2);
+		this.qtdElementos = this.getTamanho() / 2;
+
+		return downNova;
 	}
 
 	@Override
 	public int getTamanho() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.qtdElementos;
 	}
 
 	@Override
-	public void concatenar(Lista outraLista) {
-		// TODO Auto-generated method stub
-
+	public void concatenar(Lista<T> outraLista) {
+		for (int i = 0; i < outraLista.getTamanho(); i++) {
+			this.inserir(outraLista.pegar(i));
+		}
 	}
 
 	@Override
-	public int pegar(int pos) {
-		// TODO Auto-generated method stub
-		return 0;
+	public T pegar(int pos) {
+		if (pos < 0 || pos >= this.qtdElementos) {
+			throw new IndexOutOfBoundsException("Pos=" + pos);
+		}
+		NoLista<T> p = this.primeiro;
+		int posicao = 0;
+		while (p != null) {
+			if (posicao == pos) {
+				return p.getInfo();
+			}
+			posicao++;
+			p = p.getProximo();
+		}
+		return null; // nunca deveria chegar aqui
 	}
 
 }

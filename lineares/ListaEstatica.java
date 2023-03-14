@@ -1,16 +1,16 @@
 package lineares;
 
-public class ListaEstatica implements Lista {
-	private int[] info;
+public class ListaEstatica<T> implements Lista<T> {
+	private T[] info;
 	private int tamanho;
 
 	public ListaEstatica() {
-		info = new int[10];
+		info = (T[]) new Object[10];
 		tamanho = 0;
 	}
 
 	@Override
-	public void inserir(int valor) {
+	public void inserir(T valor) {
 		if (tamanho == info.length) {
 			this.redimensionar();
 		}
@@ -19,7 +19,7 @@ public class ListaEstatica implements Lista {
 	}
 
 	private void redimensionar() {
-		int[] novo = new int[info.length + 10];
+		T[] novo = (T[]) new Object[info.length + 10];
 		for (int i = 0; i < info.length; i++) {
 			novo[i] = info[i];
 		}
@@ -27,9 +27,9 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public int buscar(int valor) {
+	public int buscar(T valor) {
 		for (int i = 0; i < tamanho; i++) {
-			if (valor == info[i]) {
+			if (info[i].equals(valor)) {
 				return i;
 			}
 		}
@@ -42,7 +42,7 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public void retirar(int valor) {
+	public void retirar(T valor) {
 		int pos = this.buscar(valor);
 		if (pos != -1) { // encontrou o valor
 			for (int i = pos; i < tamanho - 1; i++) {
@@ -62,8 +62,8 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public Lista copiar() { // contribuição Maria Clara
-		Lista outra = new ListaEstatica();
+	public Lista<T> copiar() { // contribuição Maria Clara
+		Lista<T> outra = new ListaEstatica<>();
 		for (int i = 0; i < this.tamanho; i++) {
 			outra.inserir(this.info[i]);
 		}
@@ -72,9 +72,9 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public Lista dividir() {
+	public Lista<T> dividir() {
 		int metade = this.tamanho / 2;
-		Lista outra = new ListaEstatica();
+		Lista<T> outra = new ListaEstatica<>();
 		for (int i = metade; i < this.tamanho; i++) {
 			outra.inserir(this.info[i]);
 		}
@@ -88,14 +88,14 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public void concatenar(Lista outraLista) {
+	public void concatenar(Lista<T> outraLista) {
 		for (int i = 0; i < outraLista.getTamanho(); i++) {
 			this.inserir(outraLista.pegar(i));
 		}
 	}
 
 	@Override
-	public int pegar(int pos) {
+	public T pegar(int pos) {
 		if (pos < 0 || pos >= this.tamanho) {
 			throw new IndexOutOfBoundsException("Pos=" + pos + ". Length=" + tamanho);
 		}
@@ -103,7 +103,7 @@ public class ListaEstatica implements Lista {
 	}
 
 	@Override
-	public void inserir(int valor, int pos) {
+	public void inserir(T valor, int pos) {
 		if (pos < 0 || pos > tamanho) {
 			throw new IndexOutOfBoundsException("Pos=" + pos + ". Length=" + tamanho);
 		}
