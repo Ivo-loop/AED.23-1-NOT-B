@@ -1,12 +1,10 @@
-package lineares;
+package lineares    ;
 
 public interface Pilha<T> {
-
     void push(T v);
-    T pop ();
+    T pop();
     T peek();
     boolean estaVazia();
-    void liberar();
-
+    void  liberar();
+    int getTamanho();
 }
-

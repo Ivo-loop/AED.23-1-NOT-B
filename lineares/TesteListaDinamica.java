@@ -55,8 +55,18 @@ public class TesteListaDinamica {
 			System.out.println("Lista 1 tam = "+lista1.getTamanho());
 			System.out.println("Retirar 28 da lista 2");
 			lista2.retirar(28);
+			lista2.inserir(37,1);
 			System.out.println("Lista 2 = "+lista2.exibir());
 			System.out.println("Lista 2 tam = "+lista2.getTamanho());
+
+			lista2.inserir(37,0);
+			System.out.println("Lista 2 = "+lista2.exibir());
+			System.out.println("Lista 2 tam = "+lista2.getTamanho());
+
+
+			lista2.inserir(45, lista2.getTamanho());
+			System.out.println("Lista 2 = "+lista2);
+			System.out.println("Lista 2 tam = "+lista2);
 	}
 
 }

@@ -3,9 +3,9 @@ package lineares;
 public interface Lista<T> {
 
 	void inserir(T valor);
-	
+
 	void inserir(T valor, int pos);
-	
+
 	int buscar(T valor);
 
 	boolean estaVazia();

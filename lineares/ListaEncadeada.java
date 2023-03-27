@@ -21,8 +21,26 @@ public class ListaEncadeada<T> implements Lista<T> {
 
 	@Override
 	public void inserir(T valor, int pos) {
-		// TODO Auto-generated method stub
+		NoLista<T> atual = new NoLista<>();
+		NoLista<T> proximo = new NoLista<>();
+		NoLista<T> anterior = new NoLista<>();
+		if (pos == 0) {
+			proximo = this.primeiro;
+			atual.setInfo(valor);
+			atual.setProximo(proximo);
+			primeiro = atual;
+		} else {
+			for (int i = 1; i <= pos; i++) {
+				anterior = proximo;
+				proximo = proximo.getProximo();
+			}
 
+			atual.setInfo(valor);
+			anterior.setProximo(atual);
+			if (pos != getTamanho())
+				atual.setProximo(proximo);
+		}
+		qtdElementos++;
 	}
 
 	@Override
@@ -69,10 +87,12 @@ public class ListaEncadeada<T> implements Lista<T> {
 	@Override
 	public String exibir() { // contribuição do Jonathan
 		NoLista<T> p = primeiro;
-		String str = "[";
+		StringBuilder str = new StringBuilder("[");
 		while (p != null) {
-			str += p.getInfo() + ", ";
+			str.append(p.getInfo());
 			p = p.getProximo();
+			if (p != null)
+				str.append(", ");
 		}
 		return str + "]";
 	}
